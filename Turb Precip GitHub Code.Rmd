@@ -3,10 +3,6 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
-```
-
 ```{r}
 climate <- read.csv("~/Desktop/Frequently Accessed /All Folders/Transfer to backup for Umass Google docs/School/Graduate School/Y1S2/DACSS 601/Final Project/climate.csv")
 print(head(climate))
