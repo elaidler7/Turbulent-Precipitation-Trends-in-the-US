@@ -3,6 +3,10 @@ United States Trends in Turbulent Weather
 Erica Laidler
 2023-08-31
 
+``` r
+knitr::opts_chunk$set(fig.path='Figs/')
+```
+
 **Introduction**
 
 Erratic weather may be the new normal for the children who grow up in
@@ -199,7 +203,7 @@ below.
 Plot A. Comparison of Rainfall in Louisiana in June and November from
 2000 to 2021
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](Figs/unnamed-chunk-10-1.png)<!-- -->
 
 It does appear that overall there tended to be more Louisiana
 precipitation (including more extremely high precipitation measurements)
@@ -229,7 +233,7 @@ precipitation patterns in the years since 2000.
 
 Plot B. Rainfall in Louisiana in June from 2000 to 2021
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](Figs/unnamed-chunk-11-1.png)<!-- -->
 
 In this plot, I incorporate two variables: precipitation in Louisiana,
 and time. More specifically, in the plot above, the x-axis represents
@@ -244,7 +248,7 @@ difference.
 I will also display June data in Louisiana from 1895 to 1910, and then
 2000 to 2021, in the form of a facet wrap plot.
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](Figs/unnamed-chunk-12-1.png)<!-- -->
 
 Overall, the rainfall in the second period, from 2000 to 2021, seems to
 fluctuate at a higher range than that in the period from 1895 to 1916.
