@@ -3,16 +3,13 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r}
+#DATA IMPORT
 climate <- read.csv("~/Desktop/Frequently Accessed /All Folders/Transfer to backup for Umass Google docs/School/Graduate School/Y1S2/DACSS 601/Final Project/climate.csv")
 print(head(climate))
-```
 
-```{r}
-#Data Tidying
+#DATA TIDYING
 
 #Change the column names to represent the months of the year:
-
 climate2 <- climate
 colnames(climate2) = c("a", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
 
@@ -21,7 +18,6 @@ library(tidyverse)
 climate3 <- climate3 %>% add_row("a" = 01001011895, "January" = 7.03, "February" = 2.96, "March" = 8.36, "April" = 3.53, "May" = 3.96, "June"  = 5.40, "July" = 3.92, "August" = 3.36, "September" = 0.73, "October" = 2.03, "November" = 1.44, "December" = 3.66, .before = 1)
 
 #Change the row names:
-
 #(1) Establish the row names.
 climate4 <- climate3
 rownames(climate4) = climate4$a
@@ -32,9 +28,7 @@ climate5 <- climate4[,-(1),drop=FALSE]
 #Create function that counts the number of digits in a number.
 nDigits <- function(x) nchar(trunc(abs(x)))
 
-#In the code below, I discovered that row names have either 10 or 11 digits.
-#This is because the state ID's at the beginning have either 1 or 2 digits, 
-#depending on whether it is single- or double-digit.
+#In the code below, I discovered that row names have either 10 or 11 digits.This is because the state ID's at the beginning have either 1 or 2 digits, depending on whether it is single- or double-digit.
 sum_10 = 0
 sum_11 = 0
 for(i in 1:nrow(climate5)){
@@ -46,17 +40,12 @@ for(i in 1:nrow(climate5)){
   }
 }
 
-#Confirm that all of the state ID's are either 1 or 2 digits. sum_10 represents 
-#number of single-digit state IDs; sum_11 is number of double-digit state ID's.
+#Confirm that all of the state ID's are either 1 or 2 digits. sum_10 represents number of single-digit state IDs; sum_11 is number of double-digit state ID's.
 (sum_11 + sum_10) == nrow(climate5)
 
-#Now we have confirmed that the state ID's either have 1 or 2 digits, 
-#and hence that the row names have either 10 or 11 digits total. 
-#We need to deal with both of these cases.
+#Now we have confirmed that the state ID's either have 1 or 2 digits, and hence that the row names have either 10 or 11 digits total. We need to deal with both of these cases.
 
-#Create 4 columns: state, division, metric, or year based on the codings in the row 
-#names, and taking into account the cases when the row names are either 10 or 11 
-#digits. 
+#Create 4 columns: state, division, metric, or year based on the codings in the row names, and taking into account the cases when the row names are either 10 or 11 digits. 
 
 #Contains the number of digits for each row name.
 name_num = nDigits(as.numeric(rownames(climate5)))
@@ -81,12 +70,7 @@ climate7 <- climate6 %>%
 #Rename row names to simply be ID numbers from 1 to 400,636. 
 climate8 <- climate7
 rownames(climate8) = 1:400636
-
 head(climate8)
-```
-
-```{r}
-#Further Data Tidying
 
 #Check to see how many non-precipitation measurements there are.
 sum6 <- sum(((climate8[,15] != 1)))
@@ -100,23 +84,18 @@ climate <- climate_new
 
 #Check to see if there are any more rows with negative values.
 sum(climate9[1:12,] <0)
-```
 
-```{r}
+
+#UNDERSTANDING THE DATA
+
 #Finding Maximum Values (The Highest Monthly Precipitation Measurement):
 
 #Initialize the vector 'highest'.  
 highest <- rep(0, 12)
 
-#In loop below, we will establish the vector 'highest'. This vector contains 12 
-#lists, which represent the 12 months in 2021. In each list, there are 49 values for 
-#the 49 states. Each of the 49 values represent the highest precipitation measurement 
-#recorded in the state that month, out of all the divisions in the state.
+#In loop below, we will establish the vector 'highest'. This vector contains 12 lists, which represent the 12 months in 2021. In each list, there are 49 values for the 49 states. Each of the 49 values represent the highest precipitation measurement recorded in the state that month, out of all the divisions in the state.
 
-#For instance, the first list in 'highest' is 'January'. The first value in January 
-#is associated with state #1 (Alabama) and has a measurement of 3.19. This means that 
-#the maximum precipitation value recorded in Alabama (state #1) during January 2021 
-#was 3.19.
+#For instance, the first list in 'highest' is 'January'. The first value in January is associated with state #1 (Alabama) and has a measurement of 3.19. This means that the maximum precipitation value recorded in Alabama (state #1) during January 2021 was 3.19.
 
 climate_t <- climate
 
@@ -134,26 +113,21 @@ climate10 <- climate_t %>%
 highest[i] <- climate10[,2]
 }
 
-#Now that we have found the highest precipitation measurement for each month for 
-#every state, I want to find the maximum value of the whole year for every state.
+#Now that we have found the highest precipitation measurement for each month for every state, I want to find the maximum value of the whole year for every state.
 
-#The vector max_val will contain 49 values, each of which contains the highest 
-#precipitation measurement recorded in one of the 49 states over the course of 2021.
+#The vector max_val will contain 49 values, each of which contains the highest precipitation measurement recorded in one of the 49 states over the course of 2021.
 max_val <- c(0, 49)
 for (i in 1:49){
 max_val[i] = max(highest[[1]][i], highest[[2]][i], highest[[3]][i], highest[[4]][i], highest[[5]][i], highest[[6]][i], highest[[7]][i], highest[[8]][i], highest[[9]][i], highest[[10]][i], highest[[11]][i], highest[[12]][i])
 }
-```
 
-```{r}
-#FINDING MINIMUM VALUES:
+
+#Finding Minimum Values
 
 #Initialize the vector 'lowest'.
 lowest <- rep(0, 12)
 
-#Below I complete the vector 'lowest', which has the same structure as the vector 
-#'highest' in the chunk of code above, except that it represents the minimum values 
-#rather than the maximum values.
+#Below I complete the vector 'lowest', which has the same structure as the vector 'highest' in the chunk of code above, except that it represents the minimum values rather than the maximum values.
 
 climate_t <- climate
 
@@ -171,17 +145,14 @@ climate10 <- climate_t %>%
 lowest[i] <- climate10[,2]
 }
 
-#Now I create the vector min_val, which is similar in structure to max_val in the 
-#code chunk above, except now it contains the minimum values.
+#Now I create the vector min_val, which is similar in structure to max_val in the code chunk above, except now it contains the minimum values.
 min_val <- c(0, 49)
 for (i in 1:49){
 min_val[i] = min(lowest[[1]][i], lowest[[2]][i], lowest[[3]][i], lowest[[4]][i], lowest[[5]][i], lowest[[6]][i], lowest[[7]][i], lowest[[8]][i], lowest[[9]][i], lowest[[10]][i], lowest[[11]][i], lowest[[12]][i])
 }
 
 lowest
-```
 
-```{r, include=FALSE}
 #Highest precipitation measurement in 2021:
 max(max_val)
 
@@ -196,9 +167,7 @@ sort(max_val,partial=47)[47]
 
 #Fourth highest precipitation measurement - Louisiana: 
 sort(max_val,partial=46)[46]
-```
 
-```{r}
 #Lowest precipitation measurement in 2021:
 min(min_val)
 
@@ -214,14 +183,13 @@ for (i in 1:49){
 }
 print("State ID's associated with precipitation measurements of 0 in 2021: ")
 print(zero)
-```
 
-```{r}
+
 #Largest range in precipitation: 
 max(max_val-min_val)
+
 #State associated with largest range in precipitation: "
 which.max(max_val-min_val)
-
 range <- max_val - min_val
 
 #Second highest range in precipitation : 
@@ -230,18 +198,15 @@ sort(range, partial=48)[48]
 sort(range, partial=47)[47]
 #Fourth highest range in precipitation :
 sort(range, partial=46)[46]
-```
 
-```{r}
 climate_s <- climate
 
 climate_s %>%
   filter(state == 16) %>%
   summarize(mean = mean(June))
-```
 
+#VISUALIZATIONS
 
-```{r}
 #Plot A
 #Create a data frame which is the result of subsetting on data from November 2021. 
 nov_louis <- climate9 %>%
@@ -276,9 +241,7 @@ plotA = ggplot(june_nov_df, aes(precipitation, fill=month)) +
          scale_fill_manual(values=colors) + ylim(0, 10) +
          labs(title = "Louisiana Precipitation in June and November (2000-2021)", x = "Precipitation Measurements")
 plotA
-```
 
-```{r}
 #Plot B
 june_louis <- climate9 %>%
   group_by(year, state)%>%
@@ -295,9 +258,7 @@ june_louis_df <- data.frame(year, june_louis_v[1:22])
 
 plotB <- ggplot(june_louis_df, aes(x= year, y = june_louis_v[1:22])) + geom_bar(stat = "identity") + labs(x= "Year", y = "Mean Precipitation value in June", title = "June Precipitation Measurements in Louisiana from 2000 to 2021") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = -1)) 
 plotB
-```
 
-```{r}
 #Plot C
 library(tidyverse)
 june_louis <- climate9 %>%
@@ -323,4 +284,4 @@ june_louis_df2 <- data.frame(year = year_f2, precipitation = june_louis_v2, cate
 june_louis_df <- rbind(june_louis_df1, june_louis_df2)
 
 ggplot(data = june_louis_df, aes(year, precipitation)) + geom_bar(stat = "identity") + labs(x= "Year", y = "Mean Precipitation Value in June", title = "June Precipitation Measurements in Louisiana Across Eras") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = -1)) + facet_wrap(~ category, scales = "free_x") 
-```
+
